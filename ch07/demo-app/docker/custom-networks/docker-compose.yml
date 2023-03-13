@@ -1,0 +1,19 @@
+version: '2'
+services: 
+    web:
+        image: my-web:1.0
+        networks:
+            - front-network
+    api:
+        image: my-api:1.0
+        networks: 
+            - front-network
+            - back-network
+    database:
+        image: postgres:alpine
+        networks:
+            - back-network
+
+networks:
+    front-network:
+    back-network:

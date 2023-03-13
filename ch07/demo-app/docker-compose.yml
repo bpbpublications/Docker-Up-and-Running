@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  database:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: Top-Secret
+      POSTGRES_USER: demo-user
+      POSTGRES_DB: demo-database
+       
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=Top-Secret
+    ports:
+      - "5050:80"
+
+  api-java:
+    image: dockerforjobseekers/api-java:0.1
+    build: api-java
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/demo-database
+      - SPRING_DATASOURCE_USERNAME=demo-user
+      - SPRING_DATASOURCE_PASSWORD=Top-Secret
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    # ports:
+    #   - 8080:8080
+
+  api-dotnet:
+    image: dockerforjobseekers/demo-api:0.1
+    build: api-dotnet
+    ports:
+      - 5000:80
+    environment: 
+      ConnectionStrings__DemoDB: Host=database;Port=5432;Database=demo-database;Username=demo-user;Password=Top-Secret
+    depends_on: 
+      - database
+
+  web:
+    image: dockerforjobseekers/demo-web:0.1
+    build: web
+    ports:
+      - 3000:3000
+    environment: 
+      API_ENDPOINT: http://api-java:8080   # Java API
+      # API_ENDPOINT: http://api-dotnet:5000   # .NET API
+    depends_on: 
+      - api-java
+      #- api-dotnet

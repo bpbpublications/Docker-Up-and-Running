@@ -1,0 +1,5 @@
+bin
+obj
+target
+node_modules
+.vscode

@@ -1,0 +1,9 @@
+FROM golang:1.16 as builder
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
+RUN go build -o main .
+
+FROM alpine:latest
+COPY --from=builder /app .
+CMD ["./main"]

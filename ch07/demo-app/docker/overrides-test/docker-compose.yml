@@ -1,0 +1,10 @@
+version: '2'
+services:
+    web:
+        image: alpine
+        ports:
+            - 3000:3000
+        environment:
+            POSTGRES_USER: demo-user
+            POSTGRES_PASSWORD: Top-Secret
+        command: sh -c "sleep 3600"

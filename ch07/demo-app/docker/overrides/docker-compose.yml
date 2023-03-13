@@ -1,0 +1,24 @@
+version: '2'
+services:
+    web:
+        image: dockerforjobseekers/web:1.0
+        ports:
+            - 3000:3000
+
+    api:
+        image: dockerforjobseekers/api:1.0
+        environment:
+            connection_string: "postgresql://database/demo-database"
+            db-username: demo-user
+            db-password: Top-Secret
+
+    database:
+        image: postgres:alpine
+        volumes:
+            - demo-app-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: demo-user
+            POSTGRES_PASSWORD: Top-Secret
+
+volumes:
+    demo-app-data
