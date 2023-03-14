@@ -1,0 +1,14 @@
+version: '2' 
+services: 
+  web: 
+    image: my-web:1.0 
+    ports: 
+      - 3000:80 
+    environment: 
+      connection_string: postgresql://demo-user:Top-Secret@database:5432/demo-db 
+  database: 
+    image: postgres:alpine 
+    environment: 
+      POSTGRES_PASSWORD: Top-Secret 
+      POSTGRES_USER: demo-user 
+      POSTGRES_DATABASE: demo-db 

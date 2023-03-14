@@ -1,0 +1,54 @@
+workflow:
+  rules:
+    # Run pipeline if it is a merge request
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    # Run pipeline if it is the main branch
+    - if: $CI_COMMIT_BRANCH == "main"
+    # else don't run a pipeline (this includes pushes to non main branch)
+    - when: never
+
+includes:
+    - "gitlab/cloudflare-manual-setup.yml"
+    - "gitlab/deploy-to-eks.yml"
+    # more includes...
+
+
+variables:
+  FOO: "bar"
+  # more variables...
+
+image: node:14
+stages:
+  - test
+  - version
+  - secrets
+  - build
+  # more stages...
+ 
+
+ui_test:
+  stage: test
+  variables:
+    RUN_ON_ALL_BRANCHES: 1
+  script:
+    - cd app
+    - npm ci
+    - npm run generate
+    - npm run prettier-check
+    - npm run lint
+    - npm run type-check
+    - npm run test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+bff_test:
+  stage: test
+  variables:
+    # list variables here...
+  script:
+    - cd bff
+    - npm ci
+    # more scripts...
+
+# more steps

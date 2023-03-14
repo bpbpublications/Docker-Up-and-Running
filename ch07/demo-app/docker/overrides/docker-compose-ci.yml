@@ -1,0 +1,21 @@
+version: '2'
+services:
+    web:
+        build: web
+        ports:
+            - 5000:3000
+        networks:
+            - ci-network    
+    api:
+        build: api
+        environment: 
+            POSTGRES_PASSWORD: ci-pass
+        networks:
+            - ci-network
+    
+    database:
+        networks:
+            - ci-network
+            
+networks:
+    ci-network:

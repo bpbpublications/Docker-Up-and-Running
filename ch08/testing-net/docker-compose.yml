@@ -1,0 +1,8 @@
+version: "2"
+services: 
+  unit-tests:
+    image: testing-net
+    build: .
+    volumes:
+      - ./App:/src/App
+      - ./UnitTests:/src/UnitTests

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    name: web
+spec:
+  containers:
+    - name: web
+      image: nginx:alpine
+      securityContext:
+        readOnlyRootFilesystem: true
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - mountPath: /var/run
+          name: tmpfs-01
+        - mountPath: /var/cache/nginx
+          name: tmpfs-02
+  volumes:
+    - name: tmpfs-01
+      emptyDir: {}
+    - name: tmpfs-02
+      emptyDir: {}

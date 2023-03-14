@@ -1,0 +1,16 @@
+html
+  head
+    title= title
+    link(href='css/main.css' rel='stylesheet')
+  body
+    h1= message
+    p= 'Number of orders:' + orders.length 
+    div(class='container')
+      div(class='cell') ID
+      div(class='cell') Order Date
+      div(class='cell') Status
+      each order in orders
+        div(calss='cell')=order.id
+        div(calss='cell')=order.orderDate
+        div(calss='cell')=order.status
+    hr
